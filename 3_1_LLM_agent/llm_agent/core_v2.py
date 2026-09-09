@@ -69,6 +69,7 @@ class LLMAgent:
             })
         else:
             headers["Content-Type"] = "application/json"
+            payload.setdefault("reasoning_effort", "none")
         
         try:
             response = requests.post(self.url, json=payload, headers=headers)
@@ -132,6 +133,7 @@ class LLMAgent:
             print(f"> Ответ LLM для плана (очищенный): {cleaned_json_text}")
             
             # Пытаемся преобразовать ответ в JSON
+            
             action_plan = json.loads(cleaned_json_text)
             plan = action_plan.get("plan", [])
             return plan
