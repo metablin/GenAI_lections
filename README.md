@@ -5,7 +5,7 @@ CC BY / MIT LICENSE
 ## Laboratory work 1 - LanguageDetectorTool
 
 [![Python tests](https://github.com/metablin/GenAI_lections/actions/workflows/python-app.yml/badge.svg)](https://github.com/metablin/GenAI_lections/actions/workflows/python-app.yml)
-[![Coverage](https://codecov.io/gh/metablin/GenAI_lections/branch/main/graph/badge.svg?flag=language-detector)](https://app.codecov.io/gh/metablin/GenAI_lections)
+[![Coverage](https://raw.githubusercontent.com/metablin/GenAI_lections/coverage-badge/coverage.svg)](https://github.com/metablin/GenAI_lections/actions/workflows/python-app.yml)
 
 Variant 28 implements `LanguageDetectorTool`, which detects the language of text
 with `langdetect` and returns the most probable ISO language code together with

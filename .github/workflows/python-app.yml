@@ -8,8 +8,7 @@ on:
     branches: ["main"]
 
 permissions:
-  contents: read
-  id-token: write
+  contents: write
 
 jobs:
   test:
@@ -20,10 +19,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.10"
           cache: pip
@@ -39,10 +38,23 @@ jobs:
           --cov-report=term-missing
           --cov-report=xml:coverage.xml
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./3_1_LLM_agent/coverage.xml
-          flags: language-detector
-          fail_ci_if_error: true
-          use_oidc: true
+      - name: Generate coverage badge
+        run: genbadge coverage -i coverage.xml -o coverage.svg
+
+      - name: Publish coverage badge
+        if: >-
+          github.repository == 'metablin/GenAI_lections' &&
+          github.event_name != 'pull_request' &&
+          github.ref == 'refs/heads/main'
+        working-directory: .
+        run: |
+          cp 3_1_LLM_agent/coverage.svg "$RUNNER_TEMP/coverage.svg"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --orphan coverage-badge
+          git rm -rf .
+          git clean -fdx
+          cp "$RUNNER_TEMP/coverage.svg" coverage.svg
+          git add coverage.svg
+          git commit -m "Update coverage badge"
+          git push --force origin HEAD:coverage-badge
